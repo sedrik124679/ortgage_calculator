@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "BankName": "Bank1",
+    "InterestRate": 0.10,
+    "MaximumLoan": 400000,
+    "MinimumDownPayment": 20,
+    "LoanTerm": 12
+  },
+  {
+    "id": 2,
+    "BankName": "Bank2",
+    "InterestRate": 0.05,
+    "MaximumLoan": 200000,
+    "MinimumDownPayment": 15,
+    "LoanTerm": 8
+  },
+  {
+    "id": 3,
+    "BankName": "Bank3",
+    "InterestRate": 0.15,
+    "MaximumLoan": 500000,
+    "MinimumDownPayment": 10,
+    "LoanTerm": 14
+  }
+]
