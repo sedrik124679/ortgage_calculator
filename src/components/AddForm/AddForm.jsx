@@ -38,7 +38,7 @@ const AddForm = ({setToggler, currentId, setCurrentId}) => {
             return
         }
 
-        if (postData.MaximumLoan.length > 11) {
+        if (postData.MaximumLoan.length > 14) {
             alert('Maximum loan is very big')
             return
         }
