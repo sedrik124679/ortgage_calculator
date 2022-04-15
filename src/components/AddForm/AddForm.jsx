@@ -4,7 +4,7 @@ import {styles} from './AddForm.styles';
 import {useDispatch, useSelector} from "react-redux";
 import {addNewBank, updateBank} from "../../store/banksSlice";
 import {Close} from "@mui/icons-material";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 const AddForm = ({setToggler, currentId, setCurrentId}) => {
 
@@ -21,7 +21,7 @@ const AddForm = ({setToggler, currentId, setCurrentId}) => {
     const bank = useSelector(state => currentId ? state.banks.banks.find(bank => bank.id === currentId) : null)
 
     useEffect(() => {
-        if(bank) {
+        if (bank) {
             setPostData(bank)
         }
     }, [currentId, bank])
@@ -33,31 +33,39 @@ const AddForm = ({setToggler, currentId, setCurrentId}) => {
         let fieldsEmpty = postData.BankName === '' || postData.InterestRate === '' || postData.LoanTerm === '' || postData.MaximumLoan === '' || postData.MinimumDownPayment === ''
         let fieldsLessZero = postData.InterestRate <= 0 || postData.MaximumLoan <= 0 || postData.MinimumDownPayment <= 0 || postData.LoanTerm <= 0
 
-        if(fieldsEmpty) {
-            alert('Some of your fields is empty')
-        } else {
-            if(currentId) {
-                if (!fieldsLessZero) {
-                    dispatch(updateBank(postData))
-                    setToggler(false)
-                    setCurrentId(null)
-                } else {
-                    alert('Fields can not be less than 0')
-                }
-            } else {
-                if (!fieldsLessZero) {
-                    dispatch(addNewBank(postData))
-                    setToggler(false)
-                } else {
-                    alert('Fields can not be less than 0')
-                }
+        if (postData.InterestRate > 100 || postData.MinimumDownPayment > 100) {
+            alert('Percent can not be higher than 100')
+            return
+        }
+
+        if (postData.MaximumLoan.length > 11) {
+            alert('Maximum loan is very big')
+            return
+        }
+
+        if (fieldsLessZero) {
+            if (fieldsEmpty) {
+                alert('Some of your fields is empty')
+                return
             }
+            alert('Fields can not be less than 0')
+            return
+        }
+
+        if (currentId) {
+            dispatch(updateBank(postData))
+            setToggler(false)
+            setCurrentId(null)
+        } else {
+            dispatch(addNewBank(postData))
+            setToggler(false)
         }
     }
 
     return (
         <Paper sx={{width: '50%', m: '0 auto', mt: '2rem', position: 'relative'}}>
-            <Close sx={{position: 'absolute', right: '0', cursor: 'pointer'}} onClick={() => setToggler(false)}>close</Close>
+            <Close sx={{position: 'absolute', right: '0', cursor: 'pointer'}}
+                   onClick={() => setToggler(false)}>close</Close>
             <form autoComplete={'off'} noValidate style={styles.formStyles} onSubmit={submitHandler}>
                 <Typography sx={{mt: '10px'}} align={'center'}>{currentId ? 'Update' : 'Create new'} bank</Typography>
                 <TextField sx={{mt: '10px'}} required label="Bank name" type={'text'}
@@ -75,7 +83,8 @@ const AddForm = ({setToggler, currentId, setCurrentId}) => {
                 <TextField sx={{mt: '10px'}} required label="Loan term" type={"number"}
                            value={postData.LoanTerm}
                            onChange={(e) => setPostData({...postData, LoanTerm: e.target.value})}/>
-                <Button type={"submit"} sx={{mt: '10px'}} variant={"contained"} color={'primary'} size={'large'}>Create</Button>
+                <Button type={"submit"} sx={{mt: '10px'}} variant={"contained"} color={'primary'}
+                        size={'large'}>Create</Button>
             </form>
         </Paper>
     );
